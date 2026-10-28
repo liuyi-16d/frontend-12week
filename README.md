@@ -26,3 +26,71 @@ git config --global init.defaultBranch main 改名防master
 3.小命令
 git remote -v 显示的是你自己的仓库
 git log --oneline 显示历史记录每行一条
+
+
+
+---------------------------------------------------------------------------------------------------------
+一.闭包
+1.  function 工厂名(配置) {          ← 外层：存状态、只执行一次
+    状态...
+    return function (...) {       ← 内层：被反复调用，读写状态
+        ...
+    }
+    }
+
+例子：记忆化
+1.Map方法
+function memoMap(fn) {
+    // 1. 用 new Map() 创建一个哈希表
+    const cache = new Map();
+
+    return function (key) {
+        // 2. 判断有没有。用 has() 方法，不需要像对象那样转成字符串
+        if (cache.has(key)) {
+            console.log(`[Map] 命中了缓存: ${key}`);
+            return cache.get(key);
+        }
+
+        // 3. 没命中，执行计算
+        console.log(`[Map] 开始计算: ${key}`);
+        const result = fn(key);
+        
+        // 4. 存进 Map 里
+        cache.set(key, result);
+        
+        return result;
+    }
+}
+
+// 测试
+const slowMap = memoMap((x) => x * 2);
+console.log(slowMap(2), slowMap(2), slowMap(3));
+
+
+2.{}方法：会将参数转为字符串格式
+function memoObj(fn) {
+    // 1. 用一个空对象作为缓存表
+    const cache = {}; 
+
+    return function (key) {
+        // 2. 判断缓存里有没有这个 key
+        // 注意：用 in 操作符或者 hasOwnProperty 最严谨
+        if (key in cache) {
+            console.log(`[对象] 命中了缓存: ${key}`);
+            return cache[key]; 
+        }
+
+        // 3. 没命中，执行计算
+        console.log(`[对象] 开始计算: ${key}`);
+        const result = fn(key);
+        
+        // 4. 存进对象里
+        cache[key] = result;
+        
+        return result;
+    }
+}
+
+// 测试
+const slowObj = memoObj((x) => x * 2);
+console.log(slowObj(2), slowObj(2), slowObj(3));
