@@ -50,18 +50,21 @@ function myAll(promises) {
         if(list.length === 0) return resolve([])
 
         let count = 0
-        let results = new Array[list.length]
+        let results = new Array(list.length)
         list.forEach((p,i) => {
             Promise.resolve(p)
             .then(
                 (v)=>{
                     results[i]=v
                 if(++count===list.length){
-                resolve()
+                resolve(results)
                 }
              }
             )
-            .reject
+            .catch((err) => {
+                    // 4. 只要有任何一个失败，立刻 reject 整个 myAll
+                    reject(err)})
+            
 
         })
         
@@ -72,23 +75,24 @@ function myAll(promises) {
     }
 
 
-myAll([Promise.resolve(1), Promise.resolve(2)])        // [1, 2]
-myAll([Promise.resolve(1), Promise.reject('boom')])    // reject 'boom'
-myAll([])                                              // []
-myAll([1, 2, 3])      //(这题我不太懂)                                 // [1, 2, 3]（非 Promise 也能包）
+myAll([Promise.resolve(1), Promise.resolve(2)]).then((r)=>console.log(r))       // [1, 2]
+myAll([Promise.resolve(1), Promise.reject('boom')]).then(()=>{throw new Error('boom')})    // reject 'boom'
+myAll([]).then((r)=>console.log(r))                                              // []
+myAll([1, 2, 3]).then((r)=>console.log(r))      //(这题我不太懂)                                 // [1, 2, 3]（非 Promise 也能包）
+
 
 
 
 
 //写 3 个 Promise（一个 100ms 成功、一个 200ms 成功、一个 150ms 失败），分别喂给 all / allSettled / race / any，打印结果，对照上表验证。
 const delay = function(ms,value){
-    return new promise((r)=>setTimeout(()=>r(value),ms))
+    return new Promise((r)=>setTimeout(()=>r(value),ms))
 } 
 
 function Samples(){
     return{
-        a:delay(100,yes),
-        b:delay(200,yes),
+        a:delay(100,'yes'),
+        b:delay(200,'yes'),
         c:delay(150).then(()=>{throw new Error('no')})
     }
 }
@@ -98,7 +102,7 @@ Promise.all(Object.values(Samples))
     .catch((e)=>console.log("都失败",e.message))
 
 Promise.allSettled(Object.values(Samples))
-    .then((all)=>console.log(allSettled,all.map((r)=> r.status) ))
+    .then((all)=>console.log('allSettled',all.map((r)=> r.status) ))
 
 Promise.race(Object.values(Samples))
     .then((v)=>console.log('race',v))
