@@ -10,7 +10,7 @@ function compute(isVip){
     const man_jian = afterFullReduction(original_p)//满减后价格
     const dis_c_p = vipDiscount(man_jian,isVip)
     const after_you_hui = man_jian - dis_c_p
-    const shipping = after_you_hui >= 199 ? 0 : 8 
+    const shipping = after_you_hui >= 299 ? 0 : 8 
     const total_p = after_you_hui +shipping
 
     return {man_jian,dis_c_p,after_you_hui,shipping,total_p}
