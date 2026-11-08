@@ -1,7 +1,7 @@
 export const VIP_RATE = 0.15
 
 export function afterFullReduction(amount) {
-  if (amount >= 1000) return amount - 150
+  if (amount >= 1200) return amount - 150
   if (amount >= 300) return amount - 50
   return amount
 }
