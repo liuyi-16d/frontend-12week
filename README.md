@@ -27,8 +27,11 @@ git config --global init.defaultBranch main 改名防master
 git remote -v 显示的是你自己的仓库
 git log --oneline 显示历史记录每行一条
 
-
-
+git push -u origin main
+本地 main  →  追踪  →  origin/main
+以后只需：git push        # 自动推到 origin/main
+        git pull        # 自动从 origin/main 拉
+        git status      # 能显示 "ahead of 'origin/main' by N commits"
 ---------------------------------------------------------------------------------------------------------
 一.闭包
 1.  function 工厂名(配置) {          ← 外层：存状态、只执行一次
