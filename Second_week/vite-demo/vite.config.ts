@@ -30,3 +30,9 @@ export default defineConfig({
 // 4. 偷梁换柱：Vite 在 Node 层面将请求重新组装——用 rewrite 去掉 '/api'，用 changeOrigin 修改请求头里的 Host（伪装成目标域名），然后向目标服务器（target + '/get'）发起真实请求。
 // 5. 原路返回：目标服务器把数据返回给 Vite，Vite 再以本地服务器的身份，把数据塞给浏览器。
 // 结论：Vite 就是个“双向传话”的中间人，完美骗过了浏览器的同源策略。
+
+
+//补充① 代理只在开发期有效 npm run build 出来的产物里没有代理。上线后跨域要靠三选一：Nginx 反向代理 / 后端开 CORS / BFF 层。这也是第 8 周部署时要处理的事。
+// ② 那个 /api 前缀和 .env 是配套的
+// env
+// VITE_API_BASE=/api        ← .env 里已经写好了
