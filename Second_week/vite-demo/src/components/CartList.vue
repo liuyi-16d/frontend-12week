@@ -1,7 +1,11 @@
 <template>
     <ul>
         <li v-for="item in props.items" :key="item.id">
-            {{ item.name }}*{{ item.qty }} = {{ item.price*item.qty }}元
+            {{ item.name }} {{ item.price }} ×
+            <button @click="emit('changeQty', item.id, -1)">−</button>
+            {{ item.qty }}
+            <button @click="emit('changeQty', item.id, 1)">+</button>
+            = {{ item.price * item.qty }} 元
             <button  
             class="bt"
             @click="handleRemove(item.id)"
@@ -9,6 +13,7 @@
             :disabled="removedIds.includes(item.id)"         
             
             >删除</button>
+
         </li>
     </ul>
 
@@ -21,7 +26,7 @@
     import {ref} from 'vue'
     const props = defineProps<{items:CartItem[]}>()
 
-    const emit = defineEmits<{remove:[id:number]}>()
+    const emit = defineEmits<{remove:[id:number]; changeQty: [id: number, delta: number] }>()
 
     const removedIds = ref<number[]>([])
     function handleRemove(id:number){

@@ -155,3 +155,6 @@ fetch('/api/get')
   .then((r)=>r.json())
   .then((d)=>console.log('代理成功',d))
   .catch((e)=>console.log('代理失败',e))
+
+
+  export {cart}
