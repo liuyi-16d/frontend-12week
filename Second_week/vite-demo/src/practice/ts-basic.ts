@@ -42,34 +42,34 @@ function totalQty(items:CartItem[]):number{
 console.log(totalQty(cart));
 
 
-type Coupon = 'Vip10'|null;
+// type Coupon = 'Vip10'|null;
 
-function getDiscount(amount: number):number{
-    if(amount>1000) return 150
-    if(amount>300) return 30
-    return 0
-}
-
-console.log(getDiscount(totalQty(cart)));
-
-function VipDiscount(amount:number,coupon:Coupon,rate:number){
-
-    coupon==='Vip10'? rate = 0.1 : 0   
-    return  amount * rate
-}
-console.log(VipDiscount);
-
-// type Coupon = 'VIP10' | null
-
-// function getDiscount(amount: number, coupon: Coupon): number {
-//   const fullReduction = amount >= 1000 ? 150 : amount >= 300 ? 50 : 0
-//   const afterReduce = amount - fullReduction
-//   const couponDiscount = coupon === 'VIP10' ? afterReduce * 0.1 : 0
-//   return Number((fullReduction + couponDiscount).toFixed(2))
+// function getDiscount(amount: number):number{
+//     if(amount>1000) return 150
+//     if(amount>300) return 30
+//     return 0
 // }
 
-// console.log(getDiscount(1776, null))    // 150      ← 和 Day4/Day5 一致
-// console.log(getDiscount(1776, 'VIP10')) // 312.6    ← 和 Day5 会员优惠一致
+// console.log(getDiscount(totalQty(cart)));
+
+// function VipDiscount(amount:number,coupon:Coupon,rate:number){
+
+//     coupon==='Vip10'? rate = 0.1 : 0   
+//     return  amount * rate
+// }
+// console.log(VipDiscount);
+
+type Coupon = 'VIP10' | null
+
+function getDiscount(amount: number, coupon: Coupon): number {
+  const fullReduction = amount >= 1000 ? 150 : amount >= 300 ? 50 : 0
+  const afterReduce = amount - fullReduction
+  const couponDiscount = coupon === 'VIP10' ? afterReduce * 0.1 : 0
+  return Number((fullReduction + couponDiscount).toFixed(2))
+}
+
+console.log(getDiscount(1776, null))    // 150      ← 和 Day4/Day5 一致
+console.log(getDiscount(1776, 'VIP10')) // 312.6    ← 和 Day5 会员优惠一致
 
 // 总结interface CartItem{}
 // 可以约束数组内必须包含的内容
@@ -147,3 +147,11 @@ console.log(s,d);
 // function add(a: number, b: number) {   // 参数必须标类型
 //   return a + b                          // 返回值自动推断为 number
 // }
+
+
+console.log(import.meta.env.VITE_API_BASE)
+console.log(import.meta.env.VITE_APP_TITLE);
+fetch('/api/get')
+  .then((r)=>r.json())
+  .then((d)=>console.log('代理成功',d))
+  .catch((e)=>console.log('代理失败',e))
