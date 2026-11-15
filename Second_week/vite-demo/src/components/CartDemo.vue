@@ -5,19 +5,19 @@
 
 
 <script setup lang="ts">
-    import {ref,computed} from 'vue'
+    import {ref,computed,watch} from 'vue'
     import type{ CartItem,Coupon } from '@/practice/types';
     import {calcBill}from '@/practice/promo';
     import CartList from './CartList.vue';
    
     
 
-    const cart = ref<CartItem[]>([
-        { id: 1, name: '机械键盘', price: 399, qty: 1, category: 'peripheral' },
-        { id: 2, name: '鼠标垫', price: 39, qty: 2, category: 'peripheral' },
-        { id: 3, name: '显示器', price: 1299, qty: 1, category: 'display' },
-    ])
-
+    // const cart = ref<CartItem[]>([
+    //     { id: 1, name: '机械键盘', price: 399, qty: 1, category: 'peripheral' },
+    //     { id: 2, name: '鼠标垫', price: 39, qty: 2, category: 'peripheral' },
+    //     { id: 3, name: '显示器', price: 1299, qty: 1, category: 'display' },
+    // ])
+    const cart = ref<CartItem[]>(loadCart())   // ← 注意：初始值来自这里，不再写死数组
     const coupon = ref<Coupon>(null)
     const bill = computed(() => calcBill(cart.value, coupon.value))
 
@@ -37,6 +37,53 @@
 
 // 2.一句口诀：computed 记结果，函数每次都算。跟新无关数据时computed有缓存不变化（更改相关数据时才计算），普通函数无缓存会变化
 // 3.折后价已经有afterDiscount来表示了，discount这样定义方便查错
+
+
+
+// watch(
+//   cart,
+//   (val) => {
+//     console.log('cart 变了', val.length, '件')
+//   },
+//   { deep: true }
+// )
+
+const STORAGE_KEY = 'vite-demo:cart'
+const DEFAULT_CART: CartItem[] = [
+  { id: 1, name: '机械键盘', price: 399, qty: 1, category: 'peripheral' },
+  { id: 2, name: '鼠标垫', price: 39, qty: 2, category: 'peripheral' },
+  { id: 3, name: '显示器', price: 1299, qty: 1, category: 'display' },
+]
+// 【干什么】读存档；解析失败（手动改过、旧版本格式）就回退到默认值
+// function loadCart(): CartItem[] {
+//   try {
+//     const raw = localStorage.getItem(STORAGE_KEY)
+//     return raw ? (JSON.parse(raw) as CartItem[]) : DEFAULT_CART
+//   } catch {
+//     return DEFAULT_CART
+//   }
+// }
+function loadCart():CartItem[]{
+    try{
+        const raw = localStorage.getItem(STORAGE_KEY)
+        return raw ?(JSON.parse(raw) as CartItem[]) : DEFAULT_CART
+    }
+    catch{
+        return DEFAULT_CART
+    }
+}
+
+
+
+
+watch(
+  cart,
+  (val) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
+  },
+  { deep: true }
+)
+
 
 
 
