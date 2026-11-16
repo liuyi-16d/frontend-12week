@@ -1,6 +1,7 @@
 <template>
     <cart-list :items="cart" @remove="removeItem" @change-qty="changeQty"/>
     <p>共 {{ bill.count }} 件 / 小计 {{ bill.subtotal }} / 优惠 {{ bill.discount }} / 运费 {{ bill.shipping }} / 应付 {{ bill.payable }}</p>
+    <el-button type="primary">主要按钮</el-button>
 </template>
 
 
@@ -17,7 +18,7 @@
     //     { id: 2, name: '鼠标垫', price: 39, qty: 2, category: 'peripheral' },
     //     { id: 3, name: '显示器', price: 1299, qty: 1, category: 'display' },
     // ])
-    const cart = ref<CartItem[]>(loadCart())   // ← 注意：初始值来自这里，不再写死数组
+
     const coupon = ref<Coupon>(null)
     const bill = computed(() => calcBill(cart.value, coupon.value))
 
@@ -55,23 +56,24 @@ const DEFAULT_CART: CartItem[] = [
   { id: 3, name: '显示器', price: 1299, qty: 1, category: 'display' },
 ]
 // 【干什么】读存档；解析失败（手动改过、旧版本格式）就回退到默认值
-// function loadCart(): CartItem[] {
-//   try {
-//     const raw = localStorage.getItem(STORAGE_KEY)
-//     return raw ? (JSON.parse(raw) as CartItem[]) : DEFAULT_CART
-//   } catch {
-//     return DEFAULT_CART
-//   }
-// }
-function loadCart():CartItem[]{
-    try{
-        const raw = localStorage.getItem(STORAGE_KEY)
-        return raw ?(JSON.parse(raw) as CartItem[]) : DEFAULT_CART
-    }
-    catch{
-        return DEFAULT_CART
-    }
+function loadCart(): CartItem[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? (JSON.parse(raw) as CartItem[]) : DEFAULT_CART
+  } catch {
+    return DEFAULT_CART
+  }
 }
+    const cart = ref<CartItem[]>(loadCart())   // ← 注意：初始值来自这里，不再写死数组
+// function loadCart():CartItem[]{
+//     try{
+//         const raw = localStorage.getItem(STORAGE_KEY)
+//         return raw ?(JSON.parse(raw) as CartItem[]) : DEFAULT_CART
+//     }
+//     catch{
+//         return DEFAULT_CART
+//     }
+// }
 
 
 
