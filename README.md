@@ -97,3 +97,62 @@ function memoObj(fn) {
 // 测试
 const slowObj = memoObj((x) => x * 2);
 console.log(slowObj(2), slowObj(2), slowObj(3));
+
+
+
+
+
+
+
+stripe 可以创建带斑马纹的表格 ，Table 组件是不具有竖直方向的边框的，如果需要，可以使用 border 属性。  show-overflow-tooltip 是布尔属性，开启后：当单元格内容超出列宽时，自动省略（显示 ...），并在鼠标悬浮时弹出 tooltip 显示完整内容。  当数据行总高度（height = "250"）超过 250px 时，表体区域会出现纵向滚动条，表头固定不动，只有数据区域滚动。fixed（不写值或写 fixed="left"）：该列固定在表格左侧 ，fixed="right"：该列固定在表格右侧。    自定义插槽: <el-table-column fixed="right" label="Operations" min-width="120">
+  <template #default>
+    <el-button link type="primary" size="small" @click="handleClick">Detail</el-button>
+    <el-button link type="primary" size="small">Edit</el-button>
+  </template>
+</el-table-column>                                                                                                         <el-table-column label="Date" width="120">
+  <template #default="scope">{{ scope.row.date }}</template>
+</el-table-column>
+
+
+
+link 是 el-button 的布尔属性，让按钮渲染成文字链接样式：没有背景色、没有边框，只显示文字。 .prevent 是 Vue 的事件修饰符，等价于在事件处理函数里调用 event.preventDefault()，阻止浏览器默认行为。
+
+这里按钮在 <el-button> 内部，.prevent 主要起"保险"作用，防止在表单等场景下按钮触发默认提交/跳转。对普通按钮影响不大，但加上更稳妥。     dayjs(now).format('YYYY-MM-DD')
+      dayjs(now)：用 dayjs 把 Date 对象包装成 dayjs 实例。   const now = new Date() 当前系统时间
+
+
+
+
+
+
+
+设置layout，表示需要显示的内容，用逗号分隔，布局元素会依次显示。分页元素包括：prev（跳转到上一页的按钮）、next（跳转到下一页的按钮）、pager（页码列表）、jumper（跳转输入框）、total（总条目数）、sizes（用于设置每页条数的选择器）以及 ->（该符号之后的所有元素将被靠右对齐）。
+
+
+
+
+
+
+
+ <el-pagination layout="prev, pager, next" :total="50" />     total 是数据总条数（不是页数）。分页组件根据 total 和 page-size 计算出总页数page-size 默认是 10。
+/* ① 相邻兄弟选择器 */
+.example-pagination-block + .example-pagination-block {
+  margin-top: 10px;
+}
+
+/* ② 后代选择器 */
+.example-pagination-block .example-demonstration {
+  margin-bottom: 16px;
+}                                                                                                                      当总页数超过 7 页时，Pagination 会折叠多余的页码按钮。通过 pager-count 属性可以设置最大页码按钮数。                         设置background属性可以为分页按钮添加背景色。
+也有size.                                                                                                :hide-on-single-page="value"           <el-switch v-model="value" />开关
+
+
+
+
+
+
+    <el-radio-group v-model="size" class="mr-4">
+      <el-radio-button value="default">default</el-radio-button>
+      <el-radio-button value="large">large</el-radio-button>
+      <el-radio-button value="small">small</el-radio-button>
+    </el-radio-group>
